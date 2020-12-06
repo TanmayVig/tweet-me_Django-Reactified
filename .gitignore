@@ -1,6 +1,7 @@
 # envitonment #
 Pipfile
 Pipfile.lock
+log.md
 
 # Django #
 *.log
