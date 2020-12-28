@@ -11,6 +11,7 @@
     <div class="col-md-4 mx-auto col-10">
         <form id="tweet-create-form" method="post" class="form" action="/create-tweet/">
             {% csrf_token %}
+            <div class="d-none alert alert-danger" id = 'tweet-create-form-error'></div>
             <input type="hidden" value="/" name="next" />
             <textarea required='required' class="form-control" name="content" id="id_content" placeholder="Your Tweet..." ></textarea>
             <button class="btn btn-primary" type="submit">Tweet</button>
@@ -25,21 +26,19 @@
 </div>
 
 <script>
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
+    
+    function handleTweetFormError(msg, display){
+        var myErrorDiv = document.getElementById('tweet-create-form-error')
+        if(display=== true){
+            // show error
+            myErrorDiv.setAttribute("class","d-block alert alert-danger")
+            myErrorDiv.innerHTML = msg
+        }else{
+            // show error
+            myErrorDiv.setAttribute("class","d-none alert alert-danger")
         }
-        return cookieValue;
     }
+
     function handleTweetCreateFormDidSubmit(event) {
         event.preventDefault()
         const myform = event.target
@@ -57,6 +56,7 @@
         xhr.setRequestHeader("X-Requested-With","XMLHttpRequest")
         xhr.onload = function() {
             if(xhr.status === 201){
+                handleTweetFormError("", false)
                 const newTweet = xhr.response
                 // const newTweetJson = JSON.parse(newTweet)  not needed coz responseType in set to json
                 // console.log(newTweet)
@@ -65,14 +65,34 @@
                 const ogHTML = tweetsContainerElement.innerHTML
                 tweetsContainerElement.innerHTML = newTweetElement + ogHTML
                 myform.reset()
+            }else if(xhr.status === 400){
+                const errorJson = xhr.response
+                const contentError = errorJson.content
+                let contentErrorMsg;
+                if(contentError){
+                    contentErrorMsg = contentError[0]
+                    if(contentErrorMsg){
+                        handleTweetFormError(contentErrorMsg, true)
+                    }else{
+                        alert("Error occured. Please try again later.")
+                    }
+                }else{
+                    alert("Error occured. Please try again later.")
+                }
+                // console.log(errorJson)
+            }else if(xhr.status === 500){
+                alert("Their was a server error please try again later.")
             }
             
             const serverResponse = xhr.response
-            console.log(xhr.status ,serverResponse)
+            // console.log(xhr.status ,serverResponse)
             const tweetsEl = document.getElementById("tweets")
             loadTweets(tweetsEl)
 
 
+        }
+        xhr.onerror = function(){
+            alert("an error occured. Please try again alter.")
         }
         xhr.send(myFormData)
     }
@@ -111,7 +131,7 @@
     
 
     function handleDidLike (tweet_id, curretnCount){
-        console.log(tweet_id, curretnCount)
+        // console.log(tweet_id, curretnCount)
         curretnCount++
 
 
