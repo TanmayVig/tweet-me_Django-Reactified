@@ -80,7 +80,11 @@
                     alert("Error occured. Please try again later.")
                 }
                 // console.log(errorJson)
-            }else if(xhr.status === 500){
+            }else if(xhr.status === 401){
+                alert("Authentication error")
+                window.location.href = "/login";
+            }
+            else if(xhr.status === 500){
                 alert("Their was a server error please try again later.")
             }
             

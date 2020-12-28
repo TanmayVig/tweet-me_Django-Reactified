@@ -26,7 +26,7 @@ SECRET_KEY = '#0@p1u!6%j_m@&xhe@!@$6)hdwqi8egv%0&7m&9*vytqv39q&m'
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1","mydomain.com"]
-
+LOGIN_URL = "/login"
 
 # Application definition
 
@@ -121,3 +121,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
