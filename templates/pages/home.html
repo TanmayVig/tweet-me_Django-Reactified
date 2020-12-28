@@ -84,6 +84,10 @@
                 alert("Authentication error")
                 window.location.href = "/login";
             }
+            else if(xhr.status === 403){
+                alert("Authentication error")
+                window.location.href = "/login";
+            }
             else if(xhr.status === 500){
                 alert("Their was a server error please try again later.")
             }
@@ -117,7 +121,7 @@
         xhr.onload = function() {
             // console.log(xhr.response)
             const serverResponse = xhr.response
-            var listedItems = serverResponse.response
+            var listedItems = serverResponse
             var finalTweetStr = ""
             for(i=0;i<listedItems.length;i++){
                 // console.log(listedItems[i]);
