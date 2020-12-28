@@ -1,9 +1,24 @@
 from django.conf import settings
 from rest_framework import serializers
+from rest_framework.decorators import action
 
 from .models import Tweet
 
 MAX_TWEET_LENGTH = settings.MAX_TWEET_LENGTH
+TWEET_ACTION_OPTIONS = settings.TWEET_ACTION_OPTIONS
+
+
+class TweetActionSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    action = serializers.CharField()
+
+    def validate_action(self, value:str) -> str:
+        value = value.lower().strip()
+        if not value in TWEET_ACTION_OPTIONS:
+            raise serializers.ValidationError("NOT a valid option for tweet")
+        return value
+
+
 
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
