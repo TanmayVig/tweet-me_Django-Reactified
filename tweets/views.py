@@ -15,7 +15,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from . models import Tweet
 from .forms import TweetForm
-from .serializers import TweetSerializer, TweetActionSerializer
+from .serializers import (TweetSerializer, 
+                            TweetActionSerializer,
+                            TweetCreateSerializer)
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -26,8 +28,8 @@ def home_view(request, *args, **kwargs):
 # @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def tweet_create_view(request, *args, **kwargs):
-    data = request.POST
-    serializer = TweetSerializer(data=data)
+    # print(request.POST)
+    serializer = TweetCreateSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user = request.user)
         return Response(serializer.data, status= 201)
