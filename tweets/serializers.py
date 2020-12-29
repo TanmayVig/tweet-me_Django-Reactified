@@ -11,6 +11,7 @@ TWEET_ACTION_OPTIONS = settings.TWEET_ACTION_OPTIONS
 class TweetActionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     action = serializers.CharField()
+    content = serializers.CharField(allow_blank = True, required = False)
 
     def validate_action(self, value:str) -> str:
         value = value.lower().strip()
@@ -21,9 +22,13 @@ class TweetActionSerializer(serializers.Serializer):
 
 
 class TweetSerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Tweet
-        fields = ['content']
+        fields = ['id','content','likes']
+
+    def get_likes(self, obj) -> int:
+        return obj.likes.count()
     
     def validate_content(self,value):
         if len(value)>MAX_TWEET_LENGTH:
