@@ -11,8 +11,8 @@ app_name = 'tweet_api'
 
 urlpatterns = [
     path('',tweet_list_view,name = "tweet_list"),
-    path('action',tweet_action_view),
+    path('action/',tweet_action_view),
     path('create/',tweet_create_view,name="tweet-form"),
-    path('<int:tweet_id>', tweet_detail_view,name = "tweet_single"),
-    path('<int:tweet_id>/delete', tweet_delete_view,name = "delete"),
+    path('<int:tweet_id>/', tweet_detail_view,name = "tweet_single"),
+    path('<int:tweet_id>/delete/', tweet_delete_view,name = "delete"),
 ]
