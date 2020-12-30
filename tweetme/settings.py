@@ -49,13 +49,14 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #common
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #third party
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
 
@@ -132,6 +133,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # modify django rest api
+CORS_ORIGIN_ALLOW_ALL = True #any website has access to my api
+CORS_URLS_REGEX = r'^/api/.*$'
 DEFAULT_RENDERER_CLASSES = ['rest_framework.renderers.JSONRenderer',]
 
 if DEBUG:
