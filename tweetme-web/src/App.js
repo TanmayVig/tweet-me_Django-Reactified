@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from './logo.svg';
 import './App.css';
-import {TweetList} from './tweets'
+import {TweetsComponent} from './tweets'
 
 
 
@@ -12,7 +12,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <div>
-          <TweetList/>
+          <TweetsComponent/>
         </div>
       </header>
     </div>
